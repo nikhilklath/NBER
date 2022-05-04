@@ -1,16 +1,18 @@
 clear all
-import excel "C:\Users\nikhi\Desktop\NBER Networks\NBER_detailed.xlsx", sheet("Sheet1") firstrow
+import excel "C:\Users\nik596\Documents\GitHub\NBER\NBER_WP.xlsx", sheet("Sheet1") firstrow
 
 split papermonth, p(" ")
 destring papermonth2, replace 
 rename papermonth2 year
-drop if year > 2020
+rename papermonth1 month
+drop if year > 2021
 drop if year < 1981
 duplicates drop paper, force
 di _N
 
-drop papertopic* paperprogram* papergroup* paperproject* authorposition*
-reshape long author authoraffiliation, i(paper) j(count)
+drop papertopic* paperprogram* papergroup* paperproject* authoraddress* A
+tostring authorposition*, replace
+reshape long author authoraffiliation authorlink authorposition, i(paper) j(count)
 drop if mi(author)
 sort year
 bys paper: gen num_authors = _N
@@ -20,3 +22,5 @@ duplicates drop paper, force
 hist num_authors
 sum num_authors, d
 restore
+
+export delimited using "C:\Users\nik596\Documents\GitHub\NBER\NBER_WP_long.csv", replace
