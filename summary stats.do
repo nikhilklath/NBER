@@ -11,7 +11,7 @@ duplicates drop paper, force
 di _N
 
 drop papertopic* paperprogram* papergroup* paperproject* authoraddress* A
-tostring authorposition*, replace
+tostring authorposition* authoraffiliation*, replace
 reshape long author authoraffiliation authorlink authorposition, i(paper) j(count)
 drop if mi(author)
 sort year
